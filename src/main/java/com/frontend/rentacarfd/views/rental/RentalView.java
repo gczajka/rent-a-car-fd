@@ -1,8 +1,6 @@
 package com.frontend.rentacarfd.views.rental;
 
-import com.frontend.rentacarfd.client.CarClient;
 import com.frontend.rentacarfd.client.RentalClient;
-import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalDto;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
