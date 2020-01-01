@@ -13,7 +13,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 @Route(value = "mainView")
 public class MainView extends VerticalLayout {
     @Autowired
@@ -23,33 +25,35 @@ public class MainView extends VerticalLayout {
     @Autowired
     private final RentalView rentalView;
     @Autowired
-    private final LoginView loginView;
-    @Autowired
     private final LogoutView logoutView;
 
-    public MainView(CarView carView, UserView userView, RentalView rentalView, LoginView loginView, LogoutView logoutView
-    ) {
+    PagedTabs tabs = new PagedTabs();
+    Tab carTab = new Tab("Cars");
+    Tab userTab = new Tab("Users");
+    Tab rentalTab = new Tab("Rentals");
+    Tab logoutTab = new Tab("Logout");
+
+    public MainView(CarView carView, UserView userView, RentalView rentalView, LogoutView logoutView) {
         this.carView = carView;
         this.userView = userView;
         this.rentalView = rentalView;
-        this.loginView = loginView;
         this.logoutView = logoutView;
 
-        PagedTabs tabs = new PagedTabs();
-        Tab loginTab = new Tab("Login");
-        Tab carTab = new Tab("Cars");
-        Tab userTab = new Tab("Users");
-        Tab rentalTab = new Tab("Rentals");
-        Tab logoutTab = new Tab("Logout");
-        tabs.add(loginView, loginTab);
         tabs.add(carView, carTab);
         tabs.add(userView, userTab);
         tabs.add(rentalView, rentalTab);
         tabs.add(logoutView, logoutTab);
-        carTab.setEnabled(false);
-        userTab.setEnabled(false);
-        rentalTab.setEnabled(false);
-        logoutTab.setEnabled(false);
+//        carTab.setEnabled(false);
+//        userTab.setEnabled(false);
+//        rentalTab.setEnabled(false);
+//        logoutTab.setEnabled(false);
         add(tabs);
     }
+
+//    public void enableTabs() {
+//        carTab.setEnabled(true);
+//        userTab.setEnabled(true);
+//        rentalTab.setEnabled(true);
+//        logoutTab.setEnabled(true);
+//    }
 }

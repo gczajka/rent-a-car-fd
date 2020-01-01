@@ -42,10 +42,10 @@ public class RegistrationView extends VerticalLayout {
         binder.forField(password)
                 .bind(UserDto::getPassword, UserDto::setPassword);
 
-        alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate("mainView"));
+        alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate("loginView"));
         registerButton.addClickListener(e -> {
            save();
-           getUI().get().navigate("mainView");
+           getUI().get().navigate("loginView");
         });
 
         add(applicationTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
