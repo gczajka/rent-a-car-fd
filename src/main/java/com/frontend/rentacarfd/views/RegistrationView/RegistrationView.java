@@ -45,7 +45,6 @@ public class RegistrationView extends VerticalLayout {
         alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate("loginView"));
         registerButton.addClickListener(e -> {
            save();
-           getUI().get().navigate("loginView");
         });
 
         add(applicationTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
@@ -61,8 +60,9 @@ public class RegistrationView extends VerticalLayout {
         userDto.setPhoneNumber(phoneNumber.getValue());
         userDto.setPassword(password.getValue());
 
-        if(!userClient.isUserRegistered(userDto.getPhoneNumber())) {
+        if(!userClient.isUserRegistered(userDto.getEmail())) {
             userClient.registerUser(userDto);
+            getUI().get().navigate("loginView");
         } else {
 
         }

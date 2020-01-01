@@ -43,17 +43,11 @@ public class MainView extends VerticalLayout {
         tabs.add(userView, userTab);
         tabs.add(rentalView, rentalTab);
         tabs.add(logoutView, logoutTab);
-//        carTab.setEnabled(false);
-//        userTab.setEnabled(false);
-//        rentalTab.setEnabled(false);
-//        logoutTab.setEnabled(false);
         add(tabs);
     }
 
-//    public void enableTabs() {
-//        carTab.setEnabled(true);
-//        userTab.setEnabled(true);
-//        rentalTab.setEnabled(true);
-//        logoutTab.setEnabled(true);
+//    public void disableTabs() {
+//        userTab.setEnabled(false);
+//        rentalTab.setEnabled(false);
 //    }
 }

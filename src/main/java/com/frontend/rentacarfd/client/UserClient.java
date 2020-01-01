@@ -31,8 +31,8 @@ public class UserClient {
         }
     }
 
-    public boolean isUserRegistered(String phoneNumber) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + phoneNumber).build().encode().toUri();
+    public boolean isUserRegistered(String email) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + email).build().encode().toUri();
         return restTemplate.getForObject(url, Boolean.class);
     }
 
