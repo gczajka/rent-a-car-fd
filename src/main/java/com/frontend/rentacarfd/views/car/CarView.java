@@ -20,9 +20,12 @@ public class CarView extends VerticalLayout {
 
         Button button1 = new Button("Add new car");
         grid.setColumns("id", "brand", "model", "colour", "engineType", "engineCapacity", "productionYear", "costPerDay", "available");
-        List<CarDto> cars = carClient.getCars();
-        grid.setItems(cars);
 
         add(button1, grid);
+    }
+
+    public void refresh() {
+        List<CarDto> cars = carClient.getCars();
+        grid.setItems(cars);
     }
 }

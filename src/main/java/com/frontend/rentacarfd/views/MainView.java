@@ -1,14 +1,10 @@
 package com.frontend.rentacarfd.views;
 
-import com.frontend.rentacarfd.views.RegistrationView.RegistrationView;
 import com.frontend.rentacarfd.views.car.CarView;
-import com.frontend.rentacarfd.views.login.LoginView;
 import com.frontend.rentacarfd.views.logout.LogoutView;
 import com.frontend.rentacarfd.views.rental.RentalView;
 import com.frontend.rentacarfd.views.user.UserView;
 import com.frontend.rentacarfd.views.utils.PagedTabs;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.Route;
@@ -46,8 +42,19 @@ public class MainView extends VerticalLayout {
         add(tabs);
     }
 
-//    public void disableTabs() {
-//        userTab.setEnabled(false);
-//        rentalTab.setEnabled(false);
-//    }
+    public void refresh() {
+        carView.refresh();
+        userView.refresh();
+        rentalView.refresh();
+    }
+
+    public void setBackStartingTab() {
+        tabs.select(carTab);
+    }
+
+    public void nonAdminViewSetup() {
+        carView.refresh();
+        userTab.setEnabled(false);
+        rentalTab.setEnabled(false);
+    }
 }

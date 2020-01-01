@@ -20,9 +20,12 @@ public class UserView extends VerticalLayout {
 
         Button button1 = new Button("Add new user");
         grid.setColumns("id", "name", "surname", "email", "phoneNumber", "password");
-        List<UserDto> users = userClient.getUsers();
-        grid.setItems(users);
 
         add(button1, grid);
+    }
+
+    public void refresh() {
+        List<UserDto> users = userClient.getUsers();
+        grid.setItems(users);
     }
 }

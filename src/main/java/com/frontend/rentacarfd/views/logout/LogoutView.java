@@ -8,12 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LogoutView extends VerticalLayout {
-
     public LogoutView() {
         Button button = new Button("If you wish to logout just click this button", new Icon(VaadinIcon.EJECT));
         button.setIconAfterText(true);
         add(button);
         setHorizontalComponentAlignment(Alignment.CENTER, button);
+        button.addClickListener(e -> logOut());
+    }
+
+    private void logOut() {
+        getUI().get().navigate("loginView");
     }
 
 }

@@ -20,9 +20,12 @@ public class RentalView extends VerticalLayout {
 
         Button button1 = new Button("Add new rental");
         grid.setColumns("id", "startDate", "endDate", "duration", "cost", "carModel", "userSurname");
-        List<RentalDto> rentals = rentalClient.getRentals();
-        grid.setItems(rentals);
 
         add(button1, grid);
+    }
+
+    public void refresh() {
+        List<RentalDto> rentals = rentalClient.getRentals();
+        grid.setItems(rentals);
     }
 }
