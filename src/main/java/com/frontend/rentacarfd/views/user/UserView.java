@@ -1,13 +1,10 @@
 package com.frontend.rentacarfd.views.user;
 
-import com.frontend.rentacarfd.client.CarClient;
 import com.frontend.rentacarfd.client.UserClient;
-import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

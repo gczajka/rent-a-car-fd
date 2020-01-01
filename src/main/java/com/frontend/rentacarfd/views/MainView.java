@@ -1,5 +1,6 @@
 package com.frontend.rentacarfd.views;
 
+import com.frontend.rentacarfd.views.RegistrationView.RegistrationView;
 import com.frontend.rentacarfd.views.car.CarView;
 import com.frontend.rentacarfd.views.login.LoginView;
 import com.frontend.rentacarfd.views.logout.LogoutView;
@@ -13,7 +14,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route
+@Route(value = "mainView")
 public class MainView extends VerticalLayout {
     @Autowired
     private final CarView carView;
@@ -26,7 +27,8 @@ public class MainView extends VerticalLayout {
     @Autowired
     private final LogoutView logoutView;
 
-    public MainView(CarView carView, UserView userView, RentalView rentalView, LoginView loginView, LogoutView logoutView) {
+    public MainView(CarView carView, UserView userView, RentalView rentalView, LoginView loginView, LogoutView logoutView
+    ) {
         this.carView = carView;
         this.userView = userView;
         this.rentalView = rentalView;
