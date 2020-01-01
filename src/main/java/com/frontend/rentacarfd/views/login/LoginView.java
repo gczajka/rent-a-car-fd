@@ -1,5 +1,6 @@
 package com.frontend.rentacarfd.views.login;
 
+import com.frontend.rentacarfd.client.LoginClient;
 import com.frontend.rentacarfd.domain.LoginDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.frontend.rentacarfd.views.MainView;
@@ -20,9 +21,12 @@ public class LoginView extends VerticalLayout {
     private Binder<LoginDto> binder = new Binder<>();
     @Autowired
     private MainView mainView;
+    @Autowired
+    private LoginClient loginClient;
 
-    public LoginView(MainView mainView) {
+    public LoginView(MainView mainView, LoginClient loginClient) {
         this.mainView = mainView;
+        this.loginClient = loginClient;
 
         add(email, password, logIn, register);
         setHorizontalComponentAlignment(Alignment.CENTER, email, password, logIn, register);
@@ -43,7 +47,7 @@ public class LoginView extends VerticalLayout {
         loginDto.setEmail(email.getValue());
         loginDto.setPassword(password.getValue());
 
-        boolean isConfirmed = true;
+        boolean isConfirmed = loginClient.isLoginRegistered(loginDto.getEmail(), loginDto.getPassword());
 
         if(isConfirmed) {
             getUI().get().navigate("mainView");
