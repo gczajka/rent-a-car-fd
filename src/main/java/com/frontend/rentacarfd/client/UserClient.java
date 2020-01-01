@@ -30,4 +30,14 @@ public class UserClient {
             return new ArrayList<>();
         }
     }
+
+    public boolean isUserRegistered(String phoneNumber) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + phoneNumber).build().encode().toUri();
+        return restTemplate.getForObject(url, Boolean.class);
+    }
+
+    public void registerUser(UserDto userDto) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.postForObject(url, userDto, UserDto.class);
+    }
 }
