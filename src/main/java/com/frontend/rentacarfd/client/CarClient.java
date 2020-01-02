@@ -29,4 +29,9 @@ public class CarClient {
             return new ArrayList<>();
         }
     }
+
+    public void saveCar(CarDto carDto) {
+            URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+            restTemplate.postForObject(url, carDto, CarDto.class);
+    }
 }

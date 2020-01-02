@@ -46,7 +46,7 @@ public class LoginView extends VerticalLayout {
         loginDto.setEmail(email.getValue());
         loginDto.setPassword(password.getValue());
 
-        if((loginDto.getEmail().equals("admin@admin.com")) && (loginDto.getPassword().equals("admin"))) {
+        if((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
             mainView.refresh();
             mainView.setBackStartingTab();
             getUI().get().navigate("mainView");

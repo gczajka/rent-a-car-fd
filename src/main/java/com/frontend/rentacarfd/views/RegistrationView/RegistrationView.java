@@ -25,6 +25,7 @@ public class RegistrationView extends VerticalLayout {
     private PasswordField password = new PasswordField("password");
     private Button alreadyRegisteredButton = new Button("Registered users should press this button to proceed to Login section. New users should fill the fields below and press the Register button.");
     private Button registerButton = new Button("Register");
+    private UserDto userDto = new UserDto();
 
     public RegistrationView(UserClient userClient) {
         this.userClient = userClient;
@@ -44,22 +45,15 @@ public class RegistrationView extends VerticalLayout {
 
         alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate("loginView"));
         registerButton.addClickListener(e -> {
-           save();
+            binder.writeBeanIfValid(userDto);
+            save(userDto);
         });
 
         add(applicationTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
         setHorizontalComponentAlignment(Alignment.CENTER, applicationTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
     }
 
-    private void save() {
-        UserDto userDto = new UserDto();
-
-        userDto.setName(name.getValue());
-        userDto.setSurname(surname.getValue());
-        userDto.setEmail(email.getValue());
-        userDto.setPhoneNumber(phoneNumber.getValue());
-        userDto.setPassword(password.getValue());
-
+    private void save(UserDto userDto) {
         if(!userClient.isUserRegistered(userDto.getEmail())) {
             userClient.registerUser(userDto);
             getUI().get().navigate("loginView");

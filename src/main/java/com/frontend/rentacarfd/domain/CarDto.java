@@ -18,6 +18,6 @@ public class CarDto {
     private String engineType;
     private Integer engineCapacity;
     private Integer productionYear;
-    private Double costPerDay;
-    private boolean available;
+    private Integer costPerDay;
+    private boolean available = true;
 }

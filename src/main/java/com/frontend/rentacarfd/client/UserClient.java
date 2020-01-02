@@ -1,6 +1,5 @@
 package com.frontend.rentacarfd.client;
 
-import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
