@@ -39,4 +39,9 @@ public class CarClient {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
         restTemplate.put(url, carDto);
     }
+
+    public void deleteCar(Long id) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/" + id).build().encode().toUri();
+        restTemplate.delete(url);
+    }
 }

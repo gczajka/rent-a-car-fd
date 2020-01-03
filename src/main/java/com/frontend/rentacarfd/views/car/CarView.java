@@ -74,6 +74,7 @@ public class CarView extends VerticalLayout {
 
         grid.setColumns("id", "brand", "model", "colour", "engineType", "engineCapacity", "productionYear", "costPerDay");
         grid.addComponentColumn(carDto -> createUpdateButton(carDto));
+        grid.addComponentColumn(carDto -> createDeleteButton(carDto));
 
         add(addNewCar, grid, newCarDialog);
     }
@@ -115,6 +116,15 @@ public class CarView extends VerticalLayout {
             updateDialog.open();
         });
         return updateButton;
+    }
+
+    private Button createDeleteButton(CarDto carDto) {
+        Button deleteButton = new Button("Delete");
+        deleteButton.addClickListener(e -> {
+            carClient.deleteCar(carDto.getId());
+            refreshForAdmin();
+        });
+        return deleteButton;
     }
 
     private void bindFields() {
