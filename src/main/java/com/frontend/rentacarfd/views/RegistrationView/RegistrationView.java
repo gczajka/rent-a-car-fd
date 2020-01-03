@@ -23,7 +23,7 @@ public class RegistrationView extends VerticalLayout {
     private EmailField email = new EmailField("e-mail");
     private TextField phoneNumber = new TextField("phone number");
     private PasswordField password = new PasswordField("password");
-    private Button alreadyRegisteredButton = new Button("Registered users should press this button to proceed to Login section. New users should fill the fields below and press the Register button.");
+    private Button alreadyRegisteredButton = new Button("Proceed to login section");
     private Button registerButton = new Button("Register");
     private UserDto userDto = new UserDto();
 

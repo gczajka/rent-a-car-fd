@@ -44,13 +44,14 @@ public class MainView extends VerticalLayout {
     }
 
     public void adminViewSetup() {
-        carView.refresh();
+        userTab.setEnabled(true);
+        carView.refreshForAdmin();
         userView.refresh();
         rentalView.refreshForAdmin();
     }
 
     public void nonAdminViewSetup(UserDto userDto) {
-        carView.refresh();
+        carView.refreshForUser();
         rentalView.refreshForUser(userDto);
         userTab.setEnabled(false);
     }

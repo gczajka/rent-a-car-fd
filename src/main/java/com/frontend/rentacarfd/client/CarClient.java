@@ -31,7 +31,12 @@ public class CarClient {
     }
 
     public void saveCar(CarDto carDto) {
-            URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
-            restTemplate.postForObject(url, carDto, CarDto.class);
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.postForObject(url, carDto, CarDto.class);
+    }
+
+    public void updateCar(CarDto carDto) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.put(url, carDto);
     }
 }
