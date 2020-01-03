@@ -12,7 +12,9 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 @Route("loginView")
 public class LoginView extends VerticalLayout {
     private EmailField email = new EmailField("e-mail");
@@ -49,6 +51,8 @@ public class LoginView extends VerticalLayout {
     private void logIn() {
         LoginDto loginDto = new LoginDto();
         binder.writeBeanIfValid(loginDto);
+        email.clear();
+        password.clear();
 
         if((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
             mainView.adminViewSetup();

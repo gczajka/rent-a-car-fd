@@ -1,6 +1,7 @@
 package com.frontend.rentacarfd.client;
 
 import com.frontend.rentacarfd.domain.RentalDto;
+import com.frontend.rentacarfd.domain.RentalVesselDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,11 @@ public class RentalClient {
         } catch (RestClientException e) {
             return new ArrayList<>();
         }
+    }
+
+    public void createRental(RentalVesselDto rentalVesselDto) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.postForObject(url, rentalVesselDto, RentalDto.class);
     }
 }
 

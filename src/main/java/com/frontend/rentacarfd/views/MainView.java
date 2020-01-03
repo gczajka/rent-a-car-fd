@@ -29,6 +29,7 @@ public class MainView extends VerticalLayout {
     Tab userTab = new Tab("Users");
     Tab rentalTab = new Tab("Rentals");
     Tab logoutTab = new Tab("Logout");
+    UserDto loggedUserDto;
 
     public MainView(CarView carView, UserView userView, RentalView rentalView, LogoutView logoutView) {
         this.carView = carView;
@@ -40,10 +41,18 @@ public class MainView extends VerticalLayout {
         tabs.add(userView, userTab);
         tabs.add(rentalView, rentalTab);
         tabs.add(logoutView, logoutTab);
+//        rentalView.addClickListener(e -> {
+//            if(loggedUserDto == null) {
+//                rentalView.refreshForAdmin();
+//            } else {
+//                rentalView.refreshForUser(loggedUserDto);
+//            }
+//        });
         add(tabs);
     }
 
     public void adminViewSetup() {
+        loggedUserDto = null;
         userTab.setEnabled(true);
         carView.refreshForAdmin();
         userView.refresh();
@@ -51,7 +60,8 @@ public class MainView extends VerticalLayout {
     }
 
     public void nonAdminViewSetup(UserDto userDto) {
-        carView.refreshForUser();
+        loggedUserDto = userDto;
+        carView.refreshForUser(userDto);
         rentalView.refreshForUser(userDto);
         userTab.setEnabled(false);
     }

@@ -1,7 +1,12 @@
 package com.frontend.rentacarfd.views.car;
 
 import com.frontend.rentacarfd.client.CarClient;
+import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.CarDto;
+import com.frontend.rentacarfd.domain.RentalVesselDto;
+import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.login.LoginView;
+import com.frontend.rentacarfd.views.rental.RentalView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,6 +23,7 @@ import java.util.List;
 public class CarView extends VerticalLayout {
     private Grid<CarDto> grid = new Grid<>(CarDto.class);
     private CarClient carClient;
+    private RentalClient rentalClient;
     private Button addNewCar = new Button("Add new car");
     private Dialog newCarDialog = new Dialog();
     private Dialog updateDialog = new Dialog();
@@ -38,11 +44,15 @@ public class CarView extends VerticalLayout {
     private Binder<CarDto> binderForSaving = new Binder<>();
     private Binder<CarDto> binderForUpdating = new Binder<>();
     private CarDto carDto = new CarDto();
+    private UserDto loggedUserDto;
     private Long carId;
+    private RentalView rentalView;
 
 
-    public CarView(@Autowired CarClient carClient) {
+    public CarView(@Autowired CarClient carClient, @Autowired RentalClient rentalClient, @Autowired RentalView rentalView) {
         this.carClient = carClient;
+        this.rentalClient = rentalClient;
+        this.rentalView = rentalView;
 
         Button saveCar = new Button("Save car");
         bindFields();
@@ -75,17 +85,20 @@ public class CarView extends VerticalLayout {
         grid.setColumns("id", "brand", "model", "colour", "engineType", "engineCapacity", "productionYear", "costPerDay");
         grid.addComponentColumn(carDto -> createUpdateButton(carDto));
         grid.addComponentColumn(carDto -> createDeleteButton(carDto));
+        grid.addComponentColumn(carDto -> createRentalButton(carDto));
 
         add(addNewCar, grid, newCarDialog);
     }
 
     public void refreshForAdmin() {
+        loggedUserDto = null;
         addNewCar.setEnabled(true);
         List<CarDto> cars = carClient.getCars();
         grid.setItems(cars);
     }
 
-    public void refreshForUser() {
+    public void refreshForUser(UserDto userDto) {
+        loggedUserDto = userDto;
         addNewCar.setEnabled(false);
         List<CarDto> cars = carClient.getCars();
         grid.setItems(cars);
@@ -125,6 +138,19 @@ public class CarView extends VerticalLayout {
             refreshForAdmin();
         });
         return deleteButton;
+    }
+
+    private Button createRentalButton(CarDto carDto) {
+        Button rentalButton = new Button("Rent");
+        rentalButton.addClickListener(e -> {
+            rentalClient.createRental(new RentalVesselDto(loggedUserDto.getId(), carDto.getId()));
+            rentalView.refreshForUser(loggedUserDto);
+            refreshForUser(loggedUserDto);
+        });
+        if(loggedUserDto == null) {
+            rentalButton.setEnabled(false);
+        }
+        return rentalButton;
     }
 
     private void bindFields() {
