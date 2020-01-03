@@ -128,6 +128,12 @@ public class CarView extends VerticalLayout {
             binderForUpdating.readBean(carDto);
             updateDialog.open();
         });
+        if(carDto.isAvailable() == false) {
+            updateButton.setEnabled(false);
+        }
+        if(loggedUserDto != null) {
+            updateButton.setEnabled(false);
+        }
         return updateButton;
     }
 
@@ -137,6 +143,12 @@ public class CarView extends VerticalLayout {
             carClient.deleteCar(carDto.getId());
             refreshForAdmin();
         });
+        if(carDto.isAvailable() == false) {
+            deleteButton.setEnabled(false);
+        }
+        if(loggedUserDto != null) {
+            deleteButton.setEnabled(false);
+        }
         return deleteButton;
     }
 
@@ -144,10 +156,14 @@ public class CarView extends VerticalLayout {
         Button rentalButton = new Button("Rent");
         rentalButton.addClickListener(e -> {
             rentalClient.createRental(new RentalVesselDto(loggedUserDto.getId(), carDto.getId()));
+            carDto.setAvailable(false);
             rentalView.refreshForUser(loggedUserDto);
             refreshForUser(loggedUserDto);
         });
         if(loggedUserDto == null) {
+            rentalButton.setEnabled(false);
+        }
+        if(carDto.isAvailable() == false) {
             rentalButton.setEnabled(false);
         }
         return rentalButton;
