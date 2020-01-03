@@ -30,6 +30,16 @@ public class UserClient {
         }
     }
 
+    public UserDto getUserByEmail(String email) {
+        try {
+            URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/byEmail/" + email).build().encode().toUri();
+            UserDto response = restTemplate.getForObject(url, UserDto.class);
+            return ofNullable(response).orElse(new UserDto());
+        } catch (RestClientException e) {
+            return new UserDto();
+        }
+    }
+
     public boolean isUserRegistered(String email) {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + email).build().encode().toUri();
         return restTemplate.getForObject(url, Boolean.class);

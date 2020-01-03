@@ -1,5 +1,6 @@
 package com.frontend.rentacarfd.views;
 
+import com.frontend.rentacarfd.domain.UserDto;
 import com.frontend.rentacarfd.views.car.CarView;
 import com.frontend.rentacarfd.views.logout.LogoutView;
 import com.frontend.rentacarfd.views.rental.RentalView;
@@ -42,19 +43,19 @@ public class MainView extends VerticalLayout {
         add(tabs);
     }
 
-    public void refresh() {
+    public void adminViewSetup() {
         carView.refresh();
         userView.refresh();
-        rentalView.refresh();
+        rentalView.refreshForAdmin();
+    }
+
+    public void nonAdminViewSetup(UserDto userDto) {
+        carView.refresh();
+        rentalView.refreshForUser(userDto);
+        userTab.setEnabled(false);
     }
 
     public void setBackStartingTab() {
         tabs.select(carTab);
-    }
-
-    public void nonAdminViewSetup() {
-        carView.refresh();
-        userTab.setEnabled(false);
-        rentalTab.setEnabled(false);
     }
 }

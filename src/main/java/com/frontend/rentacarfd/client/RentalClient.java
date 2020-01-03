@@ -1,7 +1,7 @@
 package com.frontend.rentacarfd.client;
 
-import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalDto;
+import com.frontend.rentacarfd.domain.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -24,6 +24,16 @@ public class RentalClient {
     public List<RentalDto> getRentals() {
         try {
             URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+            RentalDto[] response = restTemplate.getForObject(url, RentalDto[].class);
+            return Arrays.asList(ofNullable(response).orElse(new RentalDto[0]));
+        } catch (RestClientException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<RentalDto> getRentalsByUsersId(Long usersId) {
+        try {
+            URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/byUserId/" + usersId).build().encode().toUri();
             RentalDto[] response = restTemplate.getForObject(url, RentalDto[].class);
             return Arrays.asList(ofNullable(response).orElse(new RentalDto[0]));
         } catch (RestClientException e) {

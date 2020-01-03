@@ -2,7 +2,7 @@ package com.frontend.rentacarfd.views.rental;
 
 import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.RentalDto;
-import com.vaadin.flow.component.button.Button;
+import com.frontend.rentacarfd.domain.UserDto;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +18,17 @@ public class RentalView extends VerticalLayout {
     public RentalView(@Autowired RentalClient rentalClient) {
         this.rentalClient = rentalClient;
 
-        Button button1 = new Button("Add new rental");
         grid.setColumns("id", "startDate", "endDate", "duration", "cost", "carModel", "userSurname");
-
-        add(button1, grid);
+        add(grid);
     }
 
-    public void refresh() {
+    public void refreshForAdmin() {
         List<RentalDto> rentals = rentalClient.getRentals();
+        grid.setItems(rentals);
+    }
+
+    public void refreshForUser(UserDto userDto) {
+        List<RentalDto> rentals = rentalClient.getRentalsByUsersId(userDto.getId());
         grid.setItems(rentals);
     }
 }

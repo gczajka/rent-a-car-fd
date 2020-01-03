@@ -1,5 +1,6 @@
 package com.frontend.rentacarfd.client;
 
+import com.frontend.rentacarfd.domain.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,8 +14,8 @@ public class LoginClient {
     private RestTemplate restTemplate;
     private String endpoint = "http://localhost:8080/v1/logins";
 
-    public boolean isLoginRegistered(String email, String password) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + email + "&" + password).build().encode().toUri();
+    public boolean isLoginRegistered(LoginDto loginDto) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + loginDto.getEmail() + "&" + loginDto.getPassword()).build().encode().toUri();
         return restTemplate.getForObject(url, Boolean.class);
     }
 }

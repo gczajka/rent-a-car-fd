@@ -1,7 +1,9 @@
 package com.frontend.rentacarfd.views.login;
 
 import com.frontend.rentacarfd.client.LoginClient;
+import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.LoginDto;
+import com.frontend.rentacarfd.domain.UserDto;
 import com.frontend.rentacarfd.views.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -18,14 +20,18 @@ public class LoginView extends VerticalLayout {
     private Button logIn = new Button(" Log in");
     private Button register = new Button(" Register");
     private Binder<LoginDto> binder = new Binder<>();
+    private UserDto userDto;
     @Autowired
     private MainView mainView;
     @Autowired
     private LoginClient loginClient;
+    @Autowired
+    private UserClient userClient;
 
-    public LoginView(MainView mainView, LoginClient loginClient) {
+    public LoginView(MainView mainView, LoginClient loginClient, UserClient userClient) {
         this.mainView = mainView;
         this.loginClient = loginClient;
+        this.userClient = userClient;
 
         add(email, password, logIn, register);
         setHorizontalComponentAlignment(Alignment.CENTER, email, password, logIn, register);
@@ -42,18 +48,17 @@ public class LoginView extends VerticalLayout {
 
     private void logIn() {
         LoginDto loginDto = new LoginDto();
-
-        loginDto.setEmail(email.getValue());
-        loginDto.setPassword(password.getValue());
+        binder.writeBeanIfValid(loginDto);
 
         if((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
-            mainView.refresh();
+            mainView.adminViewSetup();
             mainView.setBackStartingTab();
             getUI().get().navigate("mainView");
         } else {
-            boolean isConfirmed = loginClient.isLoginRegistered(loginDto.getEmail(), loginDto.getPassword());
+            boolean isConfirmed = loginClient.isLoginRegistered(loginDto);
             if(isConfirmed) {
-                mainView.nonAdminViewSetup();
+                userDto = userClient.getUserByEmail(loginDto.getEmail());
+                mainView.nonAdminViewSetup(userDto);
                 mainView.setBackStartingTab();
             getUI().get().navigate("mainView");
         } else {
