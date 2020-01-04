@@ -5,7 +5,6 @@ import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalVesselDto;
 import com.frontend.rentacarfd.domain.UserDto;
-import com.frontend.rentacarfd.views.login.LoginView;
 import com.frontend.rentacarfd.views.rental.RentalView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;

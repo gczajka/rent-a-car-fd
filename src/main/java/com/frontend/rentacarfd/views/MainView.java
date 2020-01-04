@@ -5,7 +5,9 @@ import com.frontend.rentacarfd.views.car.CarView;
 import com.frontend.rentacarfd.views.logout.LogoutView;
 import com.frontend.rentacarfd.views.rental.RentalView;
 import com.frontend.rentacarfd.views.user.UserView;
+import com.frontend.rentacarfd.views.userAccount.UserAccountView;
 import com.frontend.rentacarfd.views.utils.PagedTabs;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.Route;
@@ -22,32 +24,36 @@ public class MainView extends VerticalLayout {
     @Autowired
     private final RentalView rentalView;
     @Autowired
+    private final UserAccountView userAccountView;
+    @Autowired
     private final LogoutView logoutView;
 
     PagedTabs tabs = new PagedTabs();
     Tab carTab = new Tab("Cars");
     Tab userTab = new Tab("Users");
     Tab rentalTab = new Tab("Rentals");
-    Tab logoutTab = new Tab("Logout");
+    Tab userAccountTab = new Tab("MyAccount");
+    Tab logoutTab = new Tab();
     UserDto loggedUserDto;
 
-    public MainView(CarView carView, UserView userView, RentalView rentalView, LogoutView logoutView) {
+    public MainView(CarView carView, UserView userView, RentalView rentalView, UserAccountView userAccountView, LogoutView logoutView) {
         this.carView = carView;
         this.userView = userView;
         this.rentalView = rentalView;
+        this.userAccountView = userAccountView;
         this.logoutView = logoutView;
 
         tabs.add(carView, carTab);
         tabs.add(userView, userTab);
         tabs.add(rentalView, rentalTab);
+        tabs.add(userAccountView, userAccountTab);
         tabs.add(logoutView, logoutTab);
-//        rentalView.addClickListener(e -> {
-//            if(loggedUserDto == null) {
-//                rentalView.refreshForAdmin();
-//            } else {
-//                rentalView.refreshForUser(loggedUserDto);
-//            }
-//        });
+        Button logoutButton = new Button("Log out");
+        logoutTab.add(logoutButton);
+        logoutButton.addClickListener(e -> {
+            logoutView.displayDialog();
+        });
+
         add(tabs);
     }
 
@@ -64,6 +70,7 @@ public class MainView extends VerticalLayout {
         carView.refreshForUser(userDto);
         rentalView.refreshForUser(userDto);
         userTab.setEnabled(false);
+        userAccountView.refreshForUser(userDto);
     }
 
     public void setBackStartingTab() {

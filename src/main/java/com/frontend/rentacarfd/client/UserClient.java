@@ -49,4 +49,9 @@ public class UserClient {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
         restTemplate.postForObject(url, userDto, UserDto.class);
     }
+
+    public void updateUser(UserDto userDto) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.put(url, userDto);
+    }
 }
