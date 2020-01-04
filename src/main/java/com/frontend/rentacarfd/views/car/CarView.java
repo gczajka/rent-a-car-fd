@@ -9,6 +9,7 @@ import com.frontend.rentacarfd.views.rental.RentalView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -24,6 +25,7 @@ public class CarView extends VerticalLayout {
     private CarClient carClient;
     private RentalClient rentalClient;
     private Button addNewCar = new Button("Add new car");
+    private Button refresh = new Button("Refresh rental availability");
     private Dialog newCarDialog = new Dialog();
     private Dialog updateDialog = new Dialog();
     private TextField brand = new TextField("brand");
@@ -53,10 +55,11 @@ public class CarView extends VerticalLayout {
         this.rentalClient = rentalClient;
         this.rentalView = rentalView;
 
+        addNewCar.addClickListener(e -> newCarDialog.open());
+        refresh.addClickListener(event -> refreshForEndedRentals());
+
         Button saveCar = new Button("Save car");
         bindFields();
-
-        addNewCar.addClickListener(e -> newCarDialog.open());
         saveCar.addClickListener(e -> {
             binderForSaving.writeBeanIfValid(carDto);
             saveCar(carDto);
@@ -66,7 +69,6 @@ public class CarView extends VerticalLayout {
         newCarDialogLayout.add(brand, model, colour, engineType, engineCapacity, productionYear, costPerDay, saveCar);
         newCarDialog.isCloseOnOutsideClick();
         newCarDialog.add(newCarDialogLayout);
-
 
         Button confirmUpdate = new Button("Update");
         confirmUpdate.addClickListener(e -> {
@@ -86,12 +88,15 @@ public class CarView extends VerticalLayout {
         grid.addComponentColumn(carDto -> createDeleteButton(carDto));
         grid.addComponentColumn(carDto -> createRentalButton(carDto));
 
-        add(addNewCar, grid, newCarDialog);
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(addNewCar, refresh);
+        add(horizontalLayout, grid, newCarDialog);
     }
 
     public void refreshForAdmin() {
         loggedUserDto = null;
         addNewCar.setEnabled(true);
+        refresh.setEnabled(false);
         List<CarDto> cars = carClient.getCars();
         grid.setItems(cars);
     }
@@ -99,6 +104,12 @@ public class CarView extends VerticalLayout {
     public void refreshForUser(UserDto userDto) {
         loggedUserDto = userDto;
         addNewCar.setEnabled(false);
+        refresh.setEnabled(true);
+        List<CarDto> cars = carClient.getCars();
+        grid.setItems(cars);
+    }
+
+    public void refreshForEndedRentals() {
         List<CarDto> cars = carClient.getCars();
         grid.setItems(cars);
     }

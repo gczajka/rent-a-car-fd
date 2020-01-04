@@ -1,8 +1,6 @@
 package com.frontend.rentacarfd.views.userAccount;
 
 import com.frontend.rentacarfd.client.UserClient;
-import com.frontend.rentacarfd.domain.CarDto;
-import com.frontend.rentacarfd.domain.RentalDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -11,6 +9,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class UserAccountView extends VerticalLayout {
@@ -22,6 +21,7 @@ public class UserAccountView extends VerticalLayout {
     private TextField password = new TextField("password");
     private Binder<UserDto> binder = new Binder<>();
     private UserDto loggedUserDto = new UserDto();
+
     private long userId;
 
     public UserAccountView(@Autowired UserClient userClient) {
@@ -35,17 +35,20 @@ public class UserAccountView extends VerticalLayout {
         });
 
         Button deleteUser = new Button("Delete");
-        deleteUser.addClickListener(e -> {
-            deleteUser(loggedUserDto);
-            getUI().get().navigate("loginView");
-        });
-
         VerticalLayout vLayout = new VerticalLayout();
         HorizontalLayout hLayout = new HorizontalLayout();
         hLayout.add(updateUser, deleteUser);
         vLayout.add(name, surname, email, phoneNumber, password, hLayout);
         add(vLayout);
         setHorizontalComponentAlignment(Alignment.CENTER, vLayout);
+
+
+        deleteUser.addClickListener(e -> {
+            if (userClient.doesUserHaveNoRents(loggedUserDto.getId())) {
+                deleteUser(loggedUserDto);
+                getUI().get().navigate("loginView");
+            } else {
+            }});
     }
 
     public void refreshForUser(UserDto userDto) {

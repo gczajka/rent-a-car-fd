@@ -46,5 +46,15 @@ public class RentalClient {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
         restTemplate.postForObject(url, rentalVesselDto, RentalDto.class);
     }
+
+    public void modifyRental(Long rentalId) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        restTemplate.put(url, rentalId);
+    }
+
+    public void deleteRental(Long rentalId) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/" + rentalId).build().encode().toUri();
+        restTemplate.delete(url);
+    }
 }
 

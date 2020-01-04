@@ -45,6 +45,11 @@ public class UserClient {
         return restTemplate.getForObject(url, Boolean.class);
     }
 
+    public boolean doesUserHaveNoRents(Long id) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/hasNoRents/" + id).build().encode().toUri();
+        return restTemplate.getForObject(url, Boolean.class);
+    }
+
     public void registerUser(UserDto userDto) {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
         restTemplate.postForObject(url, userDto, UserDto.class);
