@@ -54,4 +54,9 @@ public class UserClient {
         URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
         restTemplate.put(url, userDto);
     }
+
+    public void deleteUser(Long id) {
+        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/" + id).build().encode().toUri();
+        restTemplate.delete(url);
+    }
 }

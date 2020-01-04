@@ -5,6 +5,7 @@ import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -33,9 +34,18 @@ public class UserAccountView extends VerticalLayout {
             updateUser(loggedUserDto);
         });
 
-        VerticalLayout layout = new VerticalLayout();
-        layout.add(name, surname, email, phoneNumber, password, updateUser);
-        add(layout);
+        Button deleteUser = new Button("Delete");
+        deleteUser.addClickListener(e -> {
+            deleteUser(loggedUserDto);
+            getUI().get().navigate("loginView");
+        });
+
+        VerticalLayout vLayout = new VerticalLayout();
+        HorizontalLayout hLayout = new HorizontalLayout();
+        hLayout.add(updateUser, deleteUser);
+        vLayout.add(name, surname, email, phoneNumber, password, hLayout);
+        add(vLayout);
+        setHorizontalComponentAlignment(Alignment.CENTER, vLayout);
     }
 
     public void refreshForUser(UserDto userDto) {
@@ -44,9 +54,13 @@ public class UserAccountView extends VerticalLayout {
         binder.readBean(userDto);
     }
 
-    public void updateUser(UserDto userDto) {
+    private void updateUser(UserDto userDto) {
         userDto.setId(userId);
         userClient.updateUser(userDto);
+    }
+
+    private void deleteUser(UserDto userDto) {
+        userClient.deleteUser(userDto.getId());
     }
 
     private void bindFields() {

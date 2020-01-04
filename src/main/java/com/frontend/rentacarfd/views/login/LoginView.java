@@ -6,6 +6,7 @@ import com.frontend.rentacarfd.domain.LoginDto;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.frontend.rentacarfd.views.MainView;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -35,24 +36,25 @@ public class LoginView extends VerticalLayout {
         this.loginClient = loginClient;
         this.userClient = userClient;
 
-        add(email, password, logIn, register);
-        setHorizontalComponentAlignment(Alignment.CENTER, email, password, logIn, register);
-
         binder.forField(email)
                 .bind(LoginDto::getEmail, LoginDto::setEmail);
         binder.forField(password)
                 .bind(LoginDto::getPassword, LoginDto::setPassword);
 
         logIn.addClickListener(e -> logIn());
-        register.addClickListener(e -> getUI().get().navigate(""));
+        register.addClickListener(e -> {
+            getUI().get().navigate("");
+            clear();
+        });
 
+        add(email, password, logIn, register);
+        setAlignItems(Alignment.CENTER);
     }
 
     private void logIn() {
         LoginDto loginDto = new LoginDto();
         binder.writeBeanIfValid(loginDto);
-        email.clear();
-        password.clear();
+        clear();
 
         if((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
             mainView.adminViewSetup();
@@ -68,5 +70,10 @@ public class LoginView extends VerticalLayout {
         } else {
 
         }}
+    }
+
+    private void clear() {
+        email.clear();
+        password.clear();
     }
 }
