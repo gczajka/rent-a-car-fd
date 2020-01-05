@@ -5,9 +5,12 @@ import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalVesselDto;
 import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -92,7 +95,10 @@ public class CarView extends VerticalLayout {
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(addNewCar, refresh);
-        add(horizontalLayout, grid, newCarDialog);
+        LabelFactory labelFactory = new LabelFactory();
+        Label label = labelFactory.createLabel(LabelStyle.TAB_INFO, "Pick a car that suits your needs. Standard rent period is 1 day. To lengthen your rental go to Rentals tab.");
+
+        add(horizontalLayout, label, grid, newCarDialog);
     }
 
     void refreshForAdmin() {

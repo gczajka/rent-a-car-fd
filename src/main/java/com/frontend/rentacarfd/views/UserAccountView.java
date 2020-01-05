@@ -2,7 +2,10 @@ package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -38,8 +41,12 @@ public class UserAccountView extends VerticalLayout {
         Button deleteUser = new Button("Delete");
         HorizontalLayout hLayout = new HorizontalLayout();
         hLayout.add(updateUser, deleteUser);
-        add(name, surname, email, phoneNumber, password, hLayout);
-        setHorizontalComponentAlignment(Alignment.CENTER, name, surname, email, phoneNumber, password, hLayout);
+
+        LabelFactory labelFactory = new LabelFactory();
+        Label label = labelFactory.createLabel(LabelStyle.TAB_INFO, "You can modify your user data here. Please remember that in order to delete your account you need to end all your rentals first.");
+
+        add(label, name, surname, email, phoneNumber, password, hLayout);
+        setHorizontalComponentAlignment(Alignment.CENTER, label, name, surname, email, phoneNumber, password, hLayout);
 
         deleteUser.addClickListener(e -> {
             if (userClient.doesUserHaveNoRents(loggedUserDto.getId())) {

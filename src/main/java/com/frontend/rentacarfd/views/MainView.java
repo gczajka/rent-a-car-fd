@@ -40,10 +40,12 @@ public class MainView extends VerticalLayout {
         this.userAccountView = userAccountView;
         this.logoutView = logoutView;
 
-        LabelFactory labelFactory = new LabelFactory();
         Tab rentalTab = new Tab("Rentals");
         Tab logoutTab = new Tab();
+
+        LabelFactory labelFactory = new LabelFactory();
         Label applicationTitle = labelFactory.createLabel(LabelStyle.APP_TITLE, "Rent-a-Car Service");
+        Label sectionTitle = labelFactory.createLabel(LabelStyle.SECTION_NAME, "Main section");
 
         tabs.add(carView, carTab);
         tabs.add(userView, userTab);
@@ -54,8 +56,8 @@ public class MainView extends VerticalLayout {
         logoutTab.add(logoutButton);
         logoutButton.addClickListener(e ->logoutView.displayDialog());
 
-        add(applicationTitle, tabs);
-        setHorizontalComponentAlignment(Alignment.CENTER, applicationTitle);
+        add(applicationTitle, sectionTitle, tabs);
+        setHorizontalComponentAlignment(Alignment.CENTER, applicationTitle, sectionTitle);
     }
 
     void adminViewSetup() {

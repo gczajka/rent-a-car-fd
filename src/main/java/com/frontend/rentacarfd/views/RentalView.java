@@ -3,8 +3,11 @@ package com.frontend.rentacarfd.views;
 import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.RentalDto;
 import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,10 @@ public class RentalView extends VerticalLayout {
         grid.addComponentColumn(rentalDto -> createAddDayButton(rentalDto));
         grid.addComponentColumn(rentalDto -> createEndRentalButton(rentalDto));
 
-        add(grid);
+        LabelFactory labelFactory = new LabelFactory();
+        Label label = labelFactory.createLabel(LabelStyle.TAB_INFO, "To lengthen your rental click the \"Add 1 day button\"");
+
+        add(label, grid);
     }
 
     void refreshForAdmin() {

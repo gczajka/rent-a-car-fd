@@ -19,25 +19,26 @@ public class LabelFactory {
 
     private Label createAppTitle(String text) {
         Label label = new Label(text);
-        label.getStyle().set("color", "#D0D0D0");
+        label.getStyle().set("color", "#c9c9c9");
         label.getStyle().set("font-size", "100px");
-        label.getStyle().set("text-align", "left");
+        label.getStyle().set("text-align", "center");
         return label;
     }
 
     private Label createSectionName(String text) {
         Label label = new Label(text);
-        label.getStyle().set("color", "#D0D0D0");
-        label.getStyle().set("font-size", "20px");
-        label.getStyle().set("text-align", "left");
+        label.getStyle().set("color", "#c9c9c9");
+        label.getStyle().set("font-size", "30px");
+        label.getStyle().set("text-align", "center");
         return label;
     }
 
     private Label createTabInfo(String text) {
         Label label = new Label(text);
-        label.getStyle().set("color", "#D0D0D0");
-        label.getStyle().set("font-size", "10px");
-        label.getStyle().set("text-align", "left");
+        label.getStyle().set("color", "#c9c9c9");
+        label.getStyle().set("font-size", "15px");
+        label.getStyle().set("text-align", "center");
+        label.getStyle().set("font-weight", "bold");
         return label;
     }
 }

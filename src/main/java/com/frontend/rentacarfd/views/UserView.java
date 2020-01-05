@@ -2,9 +2,12 @@ package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
@@ -49,7 +52,10 @@ public class UserView extends VerticalLayout {
 
         grid.setColumns("id", NAME, SURNAME, EMAIL, PHONENUM, PASS);
 
-        add(addNewUser, grid, dialog);
+        LabelFactory labelFactory = new LabelFactory();
+        Label label = labelFactory.createLabel(LabelStyle.TAB_INFO, "Welcome Admin! Here you can add new users and monitor existing ones");
+
+        add(addNewUser, label, grid, dialog);
     }
 
     void refresh() {

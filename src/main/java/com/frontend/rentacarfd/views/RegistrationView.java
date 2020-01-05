@@ -56,7 +56,7 @@ public class RegistrationView extends VerticalLayout {
             save(userDto);
         });
 
-        add(applicationTitle, sectionTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
+        add(applicationTitle, sectionTitle, name, surname, email, phoneNumber, password, registerButton, alreadyRegisteredButton);
         setAlignItems(Alignment.CENTER);
     }
 
