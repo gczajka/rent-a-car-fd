@@ -1,5 +1,6 @@
 package com.frontend.rentacarfd.views;
 
+import com.frontend.rentacarfd.client.EmailValidatorClient;
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
 import com.frontend.rentacarfd.views.utils.LabelFactory;
@@ -21,6 +22,8 @@ import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
 public class RegistrationView extends VerticalLayout {
     @Autowired
     private UserClient userClient;
+    @Autowired
+    private EmailValidatorClient emailValidatorClient;
     private Binder<UserDto> binder = new Binder<>();
     private TextField name = new TextField(NAME);
     private TextField surname = new TextField(SURNAME);
@@ -61,7 +64,7 @@ public class RegistrationView extends VerticalLayout {
     }
 
     private void save(UserDto userDto) {
-        if(!userClient.isUserRegistered(userDto.getEmail())) {
+        if((!userClient.isUserRegistered(userDto.getEmail())) && (emailValidatorClient.isEmailValid(userDto.getEmail()))) {
             userClient.registerUser(userDto);
             getUI().get().navigate(LOGIN_VIEW);
             clear();

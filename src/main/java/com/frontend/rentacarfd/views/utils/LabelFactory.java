@@ -35,10 +35,10 @@ public class LabelFactory {
 
     private Label createTabInfo(String text) {
         Label label = new Label(text);
-        label.getStyle().set("color", "#c9c9c9");
+        label.getStyle().set("color", "BLACK");
         label.getStyle().set("font-size", "15px");
         label.getStyle().set("text-align", "center");
-        label.getStyle().set("font-weight", "bold");
+//        label.getStyle().set("font-weight", "bold");
         return label;
     }
 }
