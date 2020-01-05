@@ -1,4 +1,4 @@
-package com.frontend.rentacarfd.views.rental;
+package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.RentalDto;
@@ -28,13 +28,13 @@ public class RentalView extends VerticalLayout {
         add(grid);
     }
 
-    public void refreshForAdmin() {
+    void refreshForAdmin() {
         loggedUserDto = null;
         List<RentalDto> rentals = rentalClient.getRentals();
         grid.setItems(rentals);
     }
 
-    public void refreshForUser(UserDto userDto) {
+    void refreshForUser(UserDto userDto) {
         loggedUserDto = userDto;
         List<RentalDto> rentals = rentalClient.getRentalsByUsersId(userDto.getId());
         grid.setItems(rentals);

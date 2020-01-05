@@ -1,4 +1,4 @@
-package com.frontend.rentacarfd.views.userAccount;
+package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
@@ -10,15 +10,16 @@ import com.vaadin.flow.data.binder.Binder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
 
 @Component
 public class UserAccountView extends VerticalLayout {
     private UserClient userClient;
-    private TextField name = new TextField("name");
-    private TextField surname = new TextField("surname");
-    private TextField email = new TextField("email");
-    private TextField phoneNumber = new TextField("phoneNumber");
-    private TextField password = new TextField("password");
+    private TextField name = new TextField(NAME);
+    private TextField surname = new TextField(SURNAME);
+    private TextField email = new TextField(EMAIL);
+    private TextField phoneNumber = new TextField(PHONENUM);
+    private TextField password = new TextField(PASS);
     private Binder<UserDto> binder = new Binder<>();
     private UserDto loggedUserDto = new UserDto();
 
@@ -35,13 +36,10 @@ public class UserAccountView extends VerticalLayout {
         });
 
         Button deleteUser = new Button("Delete");
-        VerticalLayout vLayout = new VerticalLayout();
         HorizontalLayout hLayout = new HorizontalLayout();
         hLayout.add(updateUser, deleteUser);
-        vLayout.add(name, surname, email, phoneNumber, password, hLayout);
-        add(vLayout);
-        setHorizontalComponentAlignment(Alignment.CENTER, vLayout);
-
+        add(name, surname, email, phoneNumber, password, hLayout);
+        setHorizontalComponentAlignment(Alignment.CENTER, name, surname, email, phoneNumber, password, hLayout);
 
         deleteUser.addClickListener(e -> {
             if (userClient.doesUserHaveNoRents(loggedUserDto.getId())) {
@@ -51,7 +49,7 @@ public class UserAccountView extends VerticalLayout {
             }});
     }
 
-    public void refreshForUser(UserDto userDto) {
+    void refreshForUser(UserDto userDto) {
         loggedUserDto = userDto;
         userId = userDto.getId();
         binder.readBean(userDto);

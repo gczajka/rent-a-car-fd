@@ -1,21 +1,21 @@
 package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.domain.UserDto;
-import com.frontend.rentacarfd.views.car.CarView;
-import com.frontend.rentacarfd.views.logout.LogoutView;
-import com.frontend.rentacarfd.views.rental.RentalView;
-import com.frontend.rentacarfd.views.user.UserView;
-import com.frontend.rentacarfd.views.userAccount.UserAccountView;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.frontend.rentacarfd.views.utils.PagedTabs;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
+
 @Component
-@Route(value = "mainView")
+@Route(value = MAIN_VIEW)
 public class MainView extends VerticalLayout {
     @Autowired
     private final CarView carView;
@@ -31,10 +31,7 @@ public class MainView extends VerticalLayout {
     private PagedTabs tabs = new PagedTabs();
     private Tab carTab = new Tab("Cars");
     private Tab userTab = new Tab("Users");
-    private Tab rentalTab = new Tab("Rentals");
     private Tab userAccountTab = new Tab("MyAccount");
-    private Tab logoutTab = new Tab();
-    private UserDto loggedUserDto;
 
     public MainView(CarView carView, UserView userView, RentalView rentalView, UserAccountView userAccountView, LogoutView logoutView) {
         this.carView = carView;
@@ -43,6 +40,11 @@ public class MainView extends VerticalLayout {
         this.userAccountView = userAccountView;
         this.logoutView = logoutView;
 
+        LabelFactory labelFactory = new LabelFactory();
+        Tab rentalTab = new Tab("Rentals");
+        Tab logoutTab = new Tab();
+        Label applicationTitle = labelFactory.createLabel(LabelStyle.APP_TITLE, "Rent-a-Car Service");
+
         tabs.add(carView, carTab);
         tabs.add(userView, userTab);
         tabs.add(rentalView, rentalTab);
@@ -50,15 +52,13 @@ public class MainView extends VerticalLayout {
         tabs.add(logoutView, logoutTab);
         Button logoutButton = new Button("Log out");
         logoutTab.add(logoutButton);
-        logoutButton.addClickListener(e -> {
-            logoutView.displayDialog();
-        });
+        logoutButton.addClickListener(e ->logoutView.displayDialog());
 
-        add(tabs);
+        add(applicationTitle, tabs);
+        setHorizontalComponentAlignment(Alignment.CENTER, applicationTitle);
     }
 
-    public void adminViewSetup() {
-        loggedUserDto = null;
+    void adminViewSetup() {
         userAccountTab.setEnabled(false);
         userTab.setEnabled(true);
         carView.refreshForAdmin();
@@ -66,8 +66,7 @@ public class MainView extends VerticalLayout {
         rentalView.refreshForAdmin();
     }
 
-    public void nonAdminViewSetup(UserDto userDto) {
-        loggedUserDto = userDto;
+    void nonAdminViewSetup(UserDto userDto) {
         carView.refreshForUser(userDto);
         rentalView.refreshForUser(userDto);
         userTab.setEnabled(false);
@@ -75,7 +74,7 @@ public class MainView extends VerticalLayout {
         userAccountView.refreshForUser(userDto);
     }
 
-    public void setBackStartingTab() {
+    void setBackStartingTab() {
         tabs.select(carTab);
     }
 }

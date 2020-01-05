@@ -1,4 +1,4 @@
-package com.frontend.rentacarfd.views.user;
+package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
@@ -12,18 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
 
 @Component
 public class UserView extends VerticalLayout {
+
     private Grid<UserDto> grid = new Grid<>(UserDto.class);
     private UserClient userClient;
 
     private Dialog dialog = new Dialog();
-    private TextField name = new TextField("name");
-    private TextField surname = new TextField("surname");
-    private TextField email = new TextField("email");
-    private TextField phoneNumber = new TextField("phoneNumber");
-    private TextField password = new TextField("password");
+    private TextField name = new TextField(NAME);
+    private TextField surname = new TextField(SURNAME);
+    private TextField email = new TextField(EMAIL);
+    private TextField phoneNumber = new TextField(PHONENUM);
+    private TextField password = new TextField(PASS);
     private Binder<UserDto> binder = new Binder<>();
     private UserDto userDto = new UserDto();
 
@@ -45,12 +47,12 @@ public class UserView extends VerticalLayout {
         dialog.isCloseOnOutsideClick();
         dialog.add(dialogLayout);
 
-        grid.setColumns("id", "name", "surname", "email", "phoneNumber", "password");
+        grid.setColumns("id", NAME, SURNAME, EMAIL, PHONENUM, PASS);
 
         add(addNewUser, grid, dialog);
     }
 
-    public void refresh() {
+    void refresh() {
         List<UserDto> users = userClient.getUsers();
         grid.setItems(users);
     }
@@ -61,8 +63,6 @@ public class UserView extends VerticalLayout {
             refresh();
             dialog.close();
             clearFields();
-        } else {
-
         }
     }
 

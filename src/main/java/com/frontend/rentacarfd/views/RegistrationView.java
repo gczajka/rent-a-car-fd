@@ -1,9 +1,11 @@
-package com.frontend.rentacarfd.views.RegistrationView;
+package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.UserClient;
 import com.frontend.rentacarfd.domain.UserDto;
+import com.frontend.rentacarfd.views.utils.LabelFactory;
+import com.frontend.rentacarfd.views.utils.LabelStyle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -12,25 +14,30 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
 
-@Route(value = "")
+
+@Route(value = REGISTRATION_VIEW)
 public class RegistrationView extends VerticalLayout {
     @Autowired
     private UserClient userClient;
     private Binder<UserDto> binder = new Binder<>();
-    private TextField name = new TextField("name");
-    private TextField surname = new TextField("surname");
-    private EmailField email = new EmailField("e-mail");
-    private TextField phoneNumber = new TextField("phone number");
-    private PasswordField password = new PasswordField("password");
-    private Button alreadyRegisteredButton = new Button("Proceed to login section");
-    private Button registerButton = new Button("Register");
+    private TextField name = new TextField(NAME);
+    private TextField surname = new TextField(SURNAME);
+    private EmailField email = new EmailField(EMAIL);
+    private TextField phoneNumber = new TextField(PHONENUM);
+    private PasswordField password = new PasswordField(PASS);
+
     private UserDto userDto = new UserDto();
 
     public RegistrationView(UserClient userClient) {
         this.userClient = userClient;
 
-        Span applicationTitle = new Span("Rent-a-Car Service");
+        LabelFactory labelFactory = new LabelFactory();
+        Label applicationTitle = labelFactory.createLabel(LabelStyle.APP_TITLE, "Rent-a-Car Service");
+        Label sectionTitle = labelFactory.createLabel(LabelStyle.SECTION_NAME, "Registration section");
+        Button alreadyRegisteredButton = new Button("I want to proceed directly to the login section");
+        Button registerButton = new Button("Register");
 
         binder.forField(name)
                 .bind(UserDto::getName, UserDto::setName);
@@ -43,29 +50,27 @@ public class RegistrationView extends VerticalLayout {
         binder.forField(password)
                 .bind(UserDto::getPassword, UserDto::setPassword);
 
-        alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate("loginView"));
+        alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate(LOGIN_VIEW));
         registerButton.addClickListener(e -> {
             binder.writeBeanIfValid(userDto);
             save(userDto);
         });
 
-        add(applicationTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
+        add(applicationTitle, sectionTitle, alreadyRegisteredButton, name, surname, email, phoneNumber, password, registerButton);
         setAlignItems(Alignment.CENTER);
     }
 
     private void save(UserDto userDto) {
         if(!userClient.isUserRegistered(userDto.getEmail())) {
             userClient.registerUser(userDto);
-            getUI().get().navigate("loginView");
+            getUI().get().navigate(LOGIN_VIEW);
             clear();
-        } else {
-
         }
     }
 
     private void clear() {
         name.clear();
-        surname.clear();;
+        surname.clear();
         email.clear();
         phoneNumber.clear();
         password.clear();

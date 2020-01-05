@@ -1,11 +1,10 @@
-package com.frontend.rentacarfd.views.car;
+package com.frontend.rentacarfd.views;
 
 import com.frontend.rentacarfd.client.CarClient;
 import com.frontend.rentacarfd.client.RentalClient;
 import com.frontend.rentacarfd.domain.CarDto;
 import com.frontend.rentacarfd.domain.RentalVesselDto;
 import com.frontend.rentacarfd.domain.UserDto;
-import com.frontend.rentacarfd.views.rental.RentalView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.*;
 
 @Component
 public class CarView extends VerticalLayout {
+
     private Grid<CarDto> grid = new Grid<>(CarDto.class);
     private CarClient carClient;
     private RentalClient rentalClient;
@@ -28,20 +29,20 @@ public class CarView extends VerticalLayout {
     private Button refresh = new Button("Refresh rental availability");
     private Dialog newCarDialog = new Dialog();
     private Dialog updateDialog = new Dialog();
-    private TextField brand = new TextField("brand");
-    private TextField model = new TextField("model");
-    private TextField colour = new TextField("colour");
-    private TextField engineType = new TextField("engineType");
-    private IntegerField engineCapacity = new IntegerField("engineCapacity");
-    private IntegerField productionYear = new IntegerField("productionYear");
-    private IntegerField costPerDay = new IntegerField("costPerDay");
-    private TextField brandChange = new TextField("brand");
-    private TextField modelChange = new TextField("model");
-    private TextField colourChange = new TextField("colour");
-    private TextField engineTypeChange = new TextField("engineType");
-    private IntegerField engineCapacityChange = new IntegerField("engineCapacity");
-    private IntegerField productionYearChange = new IntegerField("productionYear");
-    private IntegerField costPerDayChange = new IntegerField("costPerDay");
+    private TextField brand = new TextField(BRAND);
+    private TextField model = new TextField(MODEL);
+    private TextField colour = new TextField(COLOUR);
+    private TextField engineType = new TextField(ENGTYPE);
+    private IntegerField engineCapacity = new IntegerField(ENGCAP);
+    private IntegerField productionYear = new IntegerField(PRODYEAR);
+    private IntegerField costPerDay = new IntegerField(COST);
+    private TextField brandChange = new TextField(BRAND);
+    private TextField modelChange = new TextField(MODEL);
+    private TextField colourChange = new TextField(COLOUR);
+    private TextField engineTypeChange = new TextField(ENGTYPE);
+    private IntegerField engineCapacityChange = new IntegerField(ENGCAP);
+    private IntegerField productionYearChange = new IntegerField(PRODYEAR);
+    private IntegerField costPerDayChange = new IntegerField(COST);
     private Binder<CarDto> binderForSaving = new Binder<>();
     private Binder<CarDto> binderForUpdating = new Binder<>();
     private CarDto carDto = new CarDto();
@@ -78,12 +79,13 @@ public class CarView extends VerticalLayout {
             refreshForAdmin();
             updateDialog.close();
         });
+
         VerticalLayout optionsDialogLayout = new VerticalLayout();
         optionsDialogLayout.add(brandChange, modelChange, colourChange, engineTypeChange, engineCapacityChange, productionYearChange, costPerDayChange, confirmUpdate);
         updateDialog.isCloseOnOutsideClick();
         updateDialog.add(optionsDialogLayout);
 
-        grid.setColumns("id", "brand", "model", "colour", "engineType", "engineCapacity", "productionYear", "costPerDay");
+        grid.setColumns("id", BRAND, MODEL, COLOUR, ENGTYPE, ENGCAP, PRODYEAR, COST);
         grid.addComponentColumn(carDto -> createUpdateButton(carDto));
         grid.addComponentColumn(carDto -> createDeleteButton(carDto));
         grid.addComponentColumn(carDto -> createRentalButton(carDto));
@@ -93,7 +95,7 @@ public class CarView extends VerticalLayout {
         add(horizontalLayout, grid, newCarDialog);
     }
 
-    public void refreshForAdmin() {
+    void refreshForAdmin() {
         loggedUserDto = null;
         addNewCar.setEnabled(true);
         refresh.setEnabled(false);
@@ -101,7 +103,7 @@ public class CarView extends VerticalLayout {
         grid.setItems(cars);
     }
 
-    public void refreshForUser(UserDto userDto) {
+    void refreshForUser(UserDto userDto) {
         loggedUserDto = userDto;
         addNewCar.setEnabled(false);
         refresh.setEnabled(true);
@@ -109,7 +111,7 @@ public class CarView extends VerticalLayout {
         grid.setItems(cars);
     }
 
-    public void refreshForEndedRentals() {
+    private void refreshForEndedRentals() {
         List<CarDto> cars = carClient.getCars();
         grid.setItems(cars);
     }
@@ -138,7 +140,7 @@ public class CarView extends VerticalLayout {
             binderForUpdating.readBean(carDto);
             updateDialog.open();
         });
-        if(carDto.isAvailable() == false) {
+        if(!carDto.isAvailable()) {
             updateButton.setEnabled(false);
         }
         if(loggedUserDto != null) {
@@ -153,7 +155,7 @@ public class CarView extends VerticalLayout {
             carClient.deleteCar(carDto.getId());
             refreshForAdmin();
         });
-        if(carDto.isAvailable() == false) {
+        if(!carDto.isAvailable()) {
             deleteButton.setEnabled(false);
         }
         if(loggedUserDto != null) {
@@ -173,7 +175,7 @@ public class CarView extends VerticalLayout {
         if(loggedUserDto == null) {
             rentalButton.setEnabled(false);
         }
-        if(carDto.isAvailable() == false) {
+        if(!carDto.isAvailable()) {
             rentalButton.setEnabled(false);
         }
         return rentalButton;

@@ -1,4 +1,4 @@
-package com.frontend.rentacarfd.views.logout;
+package com.frontend.rentacarfd.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LogoutView extends VerticalLayout {
-    Dialog dialog = new Dialog();
+    private Dialog dialog = new Dialog();
+
     public LogoutView() {
         Button logoutButton = new Button("Log out");
         logoutButton.addClickListener(e -> logOut());
@@ -20,12 +21,12 @@ public class LogoutView extends VerticalLayout {
         dialog.add(dialogLayout);
     }
 
-    public void logOut() {
+    private void logOut() {
         dialog.close();
         getUI().get().navigate("loginView");
     }
 
-    public void cancel() {
+    private void cancel() {
         dialog.close();
     }
 
