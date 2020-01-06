@@ -39,7 +39,7 @@ public class RegistrationView extends VerticalLayout {
         LabelFactory labelFactory = new LabelFactory();
         Label applicationTitle = labelFactory.createLabel(LabelStyle.APP_TITLE, "Rent-a-Car Service");
         Label sectionTitle = labelFactory.createLabel(LabelStyle.SECTION_NAME, "Registration section");
-        Button alreadyRegisteredButton = new Button("I want to proceed directly to the login section");
+        Button alreadyRegisteredButton = new Button("Proceed directly to the login section");
         Button registerButton = new Button("Register");
 
         binder.forField(name)
@@ -54,17 +54,16 @@ public class RegistrationView extends VerticalLayout {
                 .bind(UserDto::getPassword, UserDto::setPassword);
 
         alreadyRegisteredButton.addClickListener(e -> getUI().get().navigate(LOGIN_VIEW));
-        registerButton.addClickListener(e -> {
-            binder.writeBeanIfValid(userDto);
-            save(userDto);
-        });
+        registerButton.addClickListener(e -> save());
 
         add(applicationTitle, sectionTitle, name, surname, email, phoneNumber, password, registerButton, alreadyRegisteredButton);
         setAlignItems(Alignment.CENTER);
     }
 
-    private void save(UserDto userDto) {
-        if((!userClient.isUserRegistered(userDto.getEmail())) && (emailValidatorClient.isEmailValid(userDto.getEmail()))) {
+    private void save() {
+        if(areFieldsFilled()) {
+        binder.writeBeanIfValid(userDto);}
+        if((!userClient.isUserRegistered(userDto.getEmail())) && emailValidatorClient.isEmailValid(userDto.getEmail())) {
             userClient.registerUser(userDto);
             getUI().get().navigate(LOGIN_VIEW);
             clear();
@@ -77,5 +76,13 @@ public class RegistrationView extends VerticalLayout {
         email.clear();
         phoneNumber.clear();
         password.clear();
+    }
+
+    private boolean areFieldsFilled() {
+        boolean state = false;
+        if(!name.getValue().equals("") && !surname.getValue().equals("") && !email.getValue().equals("") && !phoneNumber.getValue().equals("") && !password.getValue().equals("")) {
+            state = true;
+        }
+        return state;
     }
 }

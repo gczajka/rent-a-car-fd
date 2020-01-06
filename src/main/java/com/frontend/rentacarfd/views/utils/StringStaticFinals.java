@@ -17,4 +17,6 @@ public class StringStaticFinals {
     public static final String ENGCAP = "engineCapacity";
     public static final String PRODYEAR = "productionYear";
     public static final String COST = "costPerDay";
+
+    public static final String FILL_FIELD = "Filling this field is required";
 }

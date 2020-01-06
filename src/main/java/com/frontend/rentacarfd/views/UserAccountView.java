@@ -34,8 +34,9 @@ public class UserAccountView extends VerticalLayout {
         Button updateUser = new Button("Update");
         binder.writeBeanIfValid(loggedUserDto);
         updateUser.addClickListener(e -> {
-            binder.writeBeanIfValid(loggedUserDto);
-            updateUser(loggedUserDto);
+            if(binder.writeBeanIfValid(loggedUserDto)) {
+                updateUser(loggedUserDto);
+            }
         });
 
         Button deleteUser = new Button("Delete");
@@ -51,9 +52,9 @@ public class UserAccountView extends VerticalLayout {
         deleteUser.addClickListener(e -> {
             if (userClient.doesUserHaveNoRents(loggedUserDto.getId())) {
                 deleteUser(loggedUserDto);
-                getUI().get().navigate("loginView");
-            } else {
-            }});
+                getUI().get().navigate(LOGIN_VIEW);
+            }
+        });
     }
 
     void refreshForUser(UserDto userDto) {
@@ -63,8 +64,10 @@ public class UserAccountView extends VerticalLayout {
     }
 
     private void updateUser(UserDto userDto) {
-        userDto.setId(userId);
-        userClient.updateUser(userDto);
+        if(areFieldsFilled()) {
+            userDto.setId(userId);
+            userClient.updateUser(userDto);
+        }
     }
 
     private void deleteUser(UserDto userDto) {
@@ -82,5 +85,13 @@ public class UserAccountView extends VerticalLayout {
                 .bind(UserDto::getPhoneNumber, UserDto::setPhoneNumber);
         binder.forField(password)
                 .bind(UserDto::getPassword, UserDto::setPassword);
+    }
+
+    private boolean areFieldsFilled() {
+        boolean state = false;
+        if(!name.getValue().equals("") && !surname.getValue().equals("") && !email.getValue().equals("") && !phoneNumber.getValue().equals("") && !password.getValue().equals("")) {
+            state = true;
+        }
+        return state;
     }
 }

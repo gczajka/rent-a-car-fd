@@ -65,8 +65,11 @@ public class CarView extends VerticalLayout {
         Button saveCar = new Button("Save car");
         bindFields();
         saveCar.addClickListener(e -> {
-            binderForSaving.writeBeanIfValid(carDto);
-            saveCar(carDto);
+            if(areFieldsFilled()) {
+                if(binderForSaving.writeBeanIfValid(carDto)) {
+                    saveCar(carDto);
+                }
+            }
         });
 
         VerticalLayout newCarDialogLayout = new VerticalLayout();
@@ -76,11 +79,14 @@ public class CarView extends VerticalLayout {
 
         Button confirmUpdate = new Button("Update");
         confirmUpdate.addClickListener(e -> {
-            binderForUpdating.writeBeanIfValid(carDto);
-            carDto.setId(carId);
-            carClient.updateCar(carDto);
-            refreshForAdmin();
-            updateDialog.close();
+            if(areChangeFieldsFilled()) {
+                if(binderForUpdating.writeBeanIfValid(carDto)) {
+                    carDto.setId(carId);
+                    carClient.updateCar(carDto);
+                    refreshForAdmin();
+                    updateDialog.close();
+                }
+            }
         });
 
         VerticalLayout optionsDialogLayout = new VerticalLayout();
@@ -218,4 +224,21 @@ public class CarView extends VerticalLayout {
         binderForUpdating.forField(costPerDayChange)
                 .bind(CarDto::getCostPerDay, CarDto::setCostPerDay);
     }
+
+    private boolean areFieldsFilled() {
+        boolean state = false;
+        if(!brand.getValue().equals("") && !model.getValue().equals("") && !colour.getValue().equals("") && !engineType.getValue().equals("") && engineCapacity.getValue() != null && productionYear.getValue() != null && costPerDay.getValue() != null) {
+            state = true;
+        }
+        return state;
+    }
+
+    private boolean areChangeFieldsFilled() {
+        boolean state = false;
+        if(!brandChange.getValue().equals("") && !modelChange.getValue().equals("") && !colourChange.getValue().equals("") && !engineTypeChange.getValue().equals("") && engineCapacityChange.getValue() != null && productionYearChange.getValue() != null && costPerDayChange.getValue() != null) {
+            state = true;
+        }
+        return state;
+    }
+
 }

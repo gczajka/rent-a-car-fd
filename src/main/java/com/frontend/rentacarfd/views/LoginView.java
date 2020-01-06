@@ -50,8 +50,8 @@ public class LoginView extends VerticalLayout {
 
         logIn.addClickListener(e -> logIn());
         register.addClickListener(e -> {
-            getUI().get().navigate(REGISTRATION_VIEW);
             clear();
+            getUI().get().navigate(REGISTRATION_VIEW);
         });
 
         add(applicationTitle, sectionTitle, email, password, logIn, register);
@@ -60,20 +60,23 @@ public class LoginView extends VerticalLayout {
 
     private void logIn() {
         LoginDto loginDto = new LoginDto();
-        binder.writeBeanIfValid(loginDto);
-        clear();
-
-        if((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
-            mainView.adminViewSetup();
-            mainView.setBackStartingTab();
-            getUI().get().navigate(MAIN_VIEW);
-        } else {
-            boolean isConfirmed = loginClient.isLoginRegistered(loginDto);
-            if(isConfirmed) {
-                UserDto userDto = userClient.getUserByEmail(loginDto.getEmail());
-                mainView.nonAdminViewSetup(userDto);
-                mainView.setBackStartingTab();
-            getUI().get().navigate(MAIN_VIEW);
+        if(areFieldsFilled()) {
+            if(binder.writeBeanIfValid(loginDto)) {
+                if ((loginDto.getEmail().equals("admin")) && (loginDto.getPassword().equals("admin"))) {
+                    clear();
+                    mainView.adminViewSetup();
+                    mainView.setBackStartingTab();
+                    getUI().get().navigate(MAIN_VIEW);
+                } else {
+                    boolean isConfirmed = loginClient.isLoginRegistered(loginDto);
+                    if (isConfirmed) {
+                        clear();
+                        UserDto userDto = userClient.getUserByEmail(loginDto.getEmail());
+                        mainView.nonAdminViewSetup(userDto);
+                        mainView.setBackStartingTab();
+                        getUI().get().navigate(MAIN_VIEW);
+                    }
+                }
             }
         }
     }
@@ -81,5 +84,13 @@ public class LoginView extends VerticalLayout {
     private void clear() {
         email.clear();
         password.clear();
+    }
+
+    private boolean areFieldsFilled() {
+        boolean state = false;
+        if(!email.getValue().equals("") && !password.getValue().equals("")) {
+            state = true;
+        }
+        return state;
     }
 }
