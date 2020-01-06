@@ -18,5 +18,5 @@ public class RentalDto {
     private Long duration;
     private Double cost;
     private String carModel;
-    private String userSurname;
+    private String userId;
 }

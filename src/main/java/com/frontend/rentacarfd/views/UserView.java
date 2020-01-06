@@ -41,8 +41,11 @@ public class UserView extends VerticalLayout {
         bindFields();
         addNewUser.addClickListener(e -> dialog.open());
         saveUser.addClickListener(e -> {
-            binder.writeBeanIfValid(userDto);
-            saveUser(userDto);
+            if(areFieldsFilled()) {
+                if(binder.writeBeanIfValid(userDto)) {
+                saveUser(userDto);
+                }
+            }
         });
 
         dialogLayout.add(name, surname, email, phoneNumber, password, saveUser);
@@ -91,5 +94,13 @@ public class UserView extends VerticalLayout {
                 .bind(UserDto::getPhoneNumber, UserDto::setPhoneNumber);
         binder.forField(password)
                 .bind(UserDto::getPassword, UserDto::setPassword);
+    }
+
+    private boolean areFieldsFilled() {
+        boolean state = false;
+        if(!name.getValue().equals("") && !surname.getValue().equals("") && !email.getValue().equals("") && !phoneNumber.getValue().equals("") && !password.getValue().equals("")) {
+            state = true;
+        }
+        return state;
     }
 }

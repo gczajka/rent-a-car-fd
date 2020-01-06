@@ -18,5 +18,9 @@ public class StringStaticFinals {
     public static final String PRODYEAR = "productionYear";
     public static final String COST = "costPerDay";
 
-    public static final String FILL_FIELD = "Filling this field is required";
+    public static final String USERS_BACKEND = "http://localhost:8080/v1/users";
+    public static final String CARS_BACKEND = "http://localhost:8080/v1/cars";
+    public static final String LOGINS_BACKEND = "http://localhost:8080/v1/logins";
+    public static final String RENTALS_BACKEND = "http://localhost:8080/v1/rentals";
+    public static final String VERIFICATION_BACKEND = "http://localhost:8080/v1/verification";
 }

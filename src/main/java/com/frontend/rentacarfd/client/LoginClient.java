@@ -8,14 +8,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.LOGINS_BACKEND;
+
 @Component
 public class LoginClient {
     @Autowired
     private RestTemplate restTemplate;
-    private String endpoint = "http://localhost:8080/v1/logins";
 
     public boolean isLoginRegistered(LoginDto loginDto) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/alreadyRegistered/" + loginDto.getEmail() + "&" + loginDto.getPassword()).build().encode().toUri();
+        URI url = UriComponentsBuilder.fromHttpUrl(LOGINS_BACKEND + "/alreadyRegistered/" + loginDto.getEmail() + "&" + loginDto.getPassword()).build().encode().toUri();
         return restTemplate.getForObject(url, Boolean.class);
     }
 }

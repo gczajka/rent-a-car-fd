@@ -12,17 +12,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.CARS_BACKEND;
 import static java.util.Optional.ofNullable;
 
 @Component
 public class CarClient {
     @Autowired
     private RestTemplate restTemplate;
-    private String endpoint = "http://localhost:8080/v1/cars";
 
     public List<CarDto> getCars() {
         try {
-            URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+            URI url = UriComponentsBuilder.fromHttpUrl(CARS_BACKEND).build().encode().toUri();
             CarDto[] response = restTemplate.getForObject(url, CarDto[].class);
             return Arrays.asList(ofNullable(response).orElse(new CarDto[0]));
         } catch (RestClientException e) {
@@ -31,17 +31,17 @@ public class CarClient {
     }
 
     public void saveCar(CarDto carDto) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        URI url = UriComponentsBuilder.fromHttpUrl(CARS_BACKEND).build().encode().toUri();
         restTemplate.postForObject(url, carDto, CarDto.class);
     }
 
     public void updateCar(CarDto carDto) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint).build().encode().toUri();
+        URI url = UriComponentsBuilder.fromHttpUrl(CARS_BACKEND).build().encode().toUri();
         restTemplate.put(url, carDto);
     }
 
     public void deleteCar(Long id) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/" + id).build().encode().toUri();
+        URI url = UriComponentsBuilder.fromHttpUrl(CARS_BACKEND + "/" + id).build().encode().toUri();
         restTemplate.delete(url);
     }
 }

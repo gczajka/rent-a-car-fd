@@ -7,14 +7,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.frontend.rentacarfd.views.utils.StringStaticFinals.VERIFICATION_BACKEND;
+
 @Component
 public class EmailValidatorClient {
     @Autowired
     private RestTemplate restTemplate;
-    private String endpoint = "http://localhost:8080/v1/verification";
 
     public boolean isEmailValid(String email) {
-        URI url = UriComponentsBuilder.fromHttpUrl(endpoint + "/" + email).build().encode().toUri();
+        URI url = UriComponentsBuilder.fromHttpUrl(VERIFICATION_BACKEND + "/" + email).build().encode().toUri();
         return restTemplate.getForObject(url, Boolean.class);
     }
 }

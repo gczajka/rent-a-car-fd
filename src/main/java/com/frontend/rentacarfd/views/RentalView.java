@@ -24,7 +24,7 @@ public class RentalView extends VerticalLayout {
     public RentalView(@Autowired RentalClient rentalClient) {
         this.rentalClient = rentalClient;
 
-        grid.setColumns("id", "startDate", "endDate", "duration", "cost", "carModel", "userSurname");
+        grid.setColumns("id", "startDate", "endDate", "duration", "cost", "carModel", "userId");
         grid.addComponentColumn(rentalDto -> createAddDayButton(rentalDto));
         grid.addComponentColumn(rentalDto -> createEndRentalButton(rentalDto));
 
